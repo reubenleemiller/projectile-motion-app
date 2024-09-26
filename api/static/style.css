@@ -92,3 +92,29 @@ input[type="range"] {
     background-color: rgba(0, 0, 0, 0.1); /* Light background for visibility */
 }
 
+.input-box-container {
+    border: 2px dotted #000080; /* Dark blue dotted border */
+    padding: 10px;
+    margin: 10px 0;
+    display: inline-block;
+    background-color: #000000; /* Black background */
+    color: #ffffff; /* White text */
+}
+
+.input-box-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #87CEEB; /* Light blue text color for labels */
+}
+
+.input-box-container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #87CEEB; /* Light blue borders for inputs */
+    border-radius: 5px;
+    background-color: #222222; /* Dark background for input fields */
+    color: #ffffff; /* White text inside the input */
+}
+
+

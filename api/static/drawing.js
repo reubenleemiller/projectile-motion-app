@@ -1,4 +1,14 @@
 
+function draw_point(pos) {
+    ctx.beginPath();
+    ctx.arc(pos[0], pos[1], 2, 0, Math.PI * 2);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.closePath();
+}
+
+
+
 function draw_particle(particle) {
     ctx.beginPath();
     const pos = particle.position.valueOf(); // Convert matrix to array

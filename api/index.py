@@ -1,7 +1,6 @@
 from flask import Flask, render_template, make_response, send_from_directory
 
-app = Flask(__name__, app = Flask(template_folder='templates', static_folder='static')
-)
+app = Flask(__name__)
 
 
 @app.route("/")
@@ -14,3 +13,7 @@ def serve_from_static(filename):
     response = make_response(send_from_directory("static", filename))
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     return response
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
