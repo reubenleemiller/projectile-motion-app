@@ -5,7 +5,7 @@ const H = canvas.height;
 const ctx = canvas.getContext('2d');
 
 
-let gravitation = 9.8
+let gravitation = 32.2
 const ORIGIN = math.matrix([0, 0])
 
 
