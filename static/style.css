@@ -1,0 +1,94 @@
+
+
+body {
+    font-family: 'Arial', sans-serif; /* Set a clean font */
+    background-color: #121212; /* Dark background for a sleek look */
+    color: #e0e0e0; /* Light text color for contrast */
+    margin: 0; /* Remove default margins */
+    padding: 20px; /* Add some padding */
+}
+
+h1 {
+    text-align: center; /* Center align the heading */
+    color: #1e90ff; /* Bright blue color for the heading */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+
+button {
+    background-color: #1e90ff; /* Bright blue button color */
+    color: white; /* Text color for button */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding inside button */
+    border-radius: 5px; /* Rounded button corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    display: block; /* Block display for centering */
+    margin: 20px auto; /* Center button */
+    transition: background-color 0.3s; /* Smooth transition on hover */
+}
+
+button:hover {
+    background-color: #00bfff; /* Lighter blue on hover */
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+
+fieldset {
+    border: 2px dotted white;
+    padding: 10px;
+    margin-right: 20px;
+    color: white;
+}
+
+.canvas-container {
+    display: flex;            /* Use Flexbox for alignment */
+    flex-direction: column;   /* Arrange items in a column */
+    align-items: center;      /* Center align items horizontally */
+    margin: 20px;            /* Add some margin if needed */
+}
+
+#myCanvas {
+    border: 2px solid #1e90ff; /* Bright blue border around the canvas */
+    display: block; /* Block display to center */
+    margin: 0 auto; /* Center the canvas */
+    background: rgba(30, 30, 30, 0.8); /* Semi-transparent dark background */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Soft shadow effect */
+    border-radius: 10px; /* Rounded corners */
+}
+
+#heightCanvas {
+    border: 1px solid #ccc;  /* Optional: Add a border for visibility */
+}
+
+
+legend {
+    color: white;
+    font-size: 18px;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 10px 0 5px;
+}
+
+input[type="range"] {
+    width: 200px;
+}
+
+#heightCanvas {
+    border: 1px solid black;
+    margin: 20px auto;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.1); /* Light background for visibility */
+}
+
