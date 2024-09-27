@@ -1,15 +1,14 @@
 
-let dt = 2
-let time = 0
 
-const heightCanvas = document.getElementById('heightCanvas');
-const heightCtx = heightCanvas.getContext('2d');
-const w = heightCanvas.width;
-const h = heightCanvas.height;
+function pixels_to_feet(pixels) {
+    return pixels / 40
+}
 
+function feet_to_pixels(feet) {
+    return feet * 40
+}
 
-heightCtx.lineWidth = 3;
-
+const REST_POSITION = math.matrix([feet_to_pixels(1), H-feet_to_pixels(1)])
 
 function getSliderValues() {
     // Accessing the slider values
@@ -33,82 +32,87 @@ function getInputValues() {
     // Return an object with the values
     return {
         angle: angle,
-        height: iheight,
+        iheight: feet_to_pixels(iheight),
         speed: speed
     };
 }
 
 
-
-
-function append_to_height_graph(ct, ch, nh) {
-    heightCtx.beginPath();
-    heightCtx.moveTo(30+ct*10, h-ch*30);
-    heightCtx.lineTo(30+(ct + dt)*10, h-nh*30);
-    heightCtx.strokeStyle = 'blue';
-    heightCtx.stroke();
-}
-
 function reset(particle, event) {
+    dt = 0
     particle.velocity = math.matrix([60, -80])
     time = 0
-    height = [0]
+    height_samples = [0]
     positions = []
-    document.getElementById('dtSlider').value = 0.1
-    particle.position = math.matrix([60, H - 60])
-    heightCtx.clearRect(0, 0, w, h); // Clear the canvas
+    document.getElementById('dtSlider').value = 0
 }
 
-const myparticle = new CircularParticle([60, H - 60], [60, -80], 30, 'blue');
-
-var height = (H - myparticle.position.valueOf()[1]) / 40
-let height_samples = [height]
-let positions = [myparticle.position.valueOf()]
-let time_samples = [0]
-let frames = 0
-
-
-function animate() {
-    ctx.clearRect(0, 0, W, H); // Clear the canvas
-    const { mass, gravity, new_dt } = getSliderValues();
+function adjust() {
     const { angle, iheight, speed } = getInputValues();
-    if (time === 0) { // Only apply these at the start of the simulation
+    const { mass, gravity, new_dt } = getSliderValues();
+    if (time == 0) {
+        console.log(angle, iheight, speed)
         const angleInRadians = math.unit(angle, 'deg').toNumber('rad');
-        
+
         // Set initial velocity using speed and angle
         const vx = speed * Math.cos(angleInRadians);  // Horizontal velocity
         const vy = -speed * Math.sin(angleInRadians); // Vertical velocity (negative because canvas Y increases downward)
-    
+
         myparticle.velocity = math.matrix([vx, vy]);
-    
-        // Set initial position based on height
-        myparticle.position = math.matrix([60, 60]);  // Assuming 1 unit height = 40 pixels
+
+        myparticle.position = REST_POSITION;
+        myparticle.position = math.add(myparticle.position, [0, -iheight])
     }
     dt = new_dt / 1000
     myparticle.mass = mass
     gravitation = gravity
+    return angle
+}
 
-    border_collisions(myparticle, 0.9)
+function init_loop_vars() {
+    dt = 0.016
+    time = 0
+    height = pixels_to_feet(H - myparticle.position.valueOf()[1])
+    height_samples = [height]
+    positions = [myparticle.position.valueOf()]
+    frames = 0
+}
 
-    // Update the particle's position and velocity
-    myparticle.integrate(dt); // Assuming a 60 FPS frame time of ~16ms
-
+function draw_sequence(ppos, angle) {
+    drawGridDynamic(W / 40, H / 40)
     draw_particle(myparticle);
-    const pos = myparticle.position.valueOf()
-    positions.push(pos)
+    draw_dotted_line(ctx, [ppos[0], H], [ppos[0], ppos[1]], 'green', `${(height).toFixed(2)} feet`)
+    if (time == 0) {
+        draw_angle([ppos[0], ppos[1]], myparticle.radius * 0.8, angle)
+    }
+    draw_vector(ppos, math.add(myparticle.position, myparticle.velocity).valueOf())
     for (let index = 0; index < positions.length; index++) {
         const p = positions[index];
         draw_point(p)
     }
-    var height = (H - pos[1]) / 40
-    height_samples.push(height)
-    draw_dotted_line(ctx, [pos[0], H], [pos[0], pos[1]], 'green', `${(height).toFixed(2)} feet`)
-    draw_vector(pos, math.add(myparticle.position, myparticle.velocity).valueOf())
-    draw_angle([pos[0], pos[1]], myparticle.radius*0.8, 30)
-    draw_axes()
-    append_to_height_graph(time, height_samples[frames], height)
+}
+
+
+let myparticle = new CircularParticle([feet_to_pixels(1), H - feet_to_pixels(1)], [60, 0], 20, 'blue');
+init_loop_vars()
+
+function animate() {
+    ctx.clearRect(0, 0, W, H); // Clear the canvas
+    angle = adjust()
+    border_collisions(myparticle, 0.9)
+
+    // Update the particle's position and velocity
+    myparticle.integrate(dt); // Assuming a 60 FPS frame time of ~16ms
+    const pos = myparticle.position.valueOf()
+    draw_sequence(pos, angle)
+
+    height = pixels_to_feet(H - pos[1])
+    if (time != 0) {
+        positions.push(pos)
+        height_samples.push(height)
+    }
+
     time += dt
-    time_samples.push(time)
     frames += 1
     requestAnimationFrame(animate); // Recursively call animate to create animation
 }

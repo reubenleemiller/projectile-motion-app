@@ -2,9 +2,43 @@
 function draw_point(pos) {
     ctx.beginPath();
     ctx.arc(pos[0], pos[1], 2, 0, Math.PI * 2);
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "orange";
     ctx.fill();
     ctx.closePath();
+}
+
+
+function drawGridDynamic(canvasWidthFeet, canvasHeightFeet) {
+    const pixelsPerFoot = 40; // 40 pixels per foot
+
+    ctx.strokeStyle = 'lightgray'; // Color of the grid lines
+    ctx.lineWidth = 1; // Line width
+
+    // Draw vertical lines
+    for (let x = 0; x <= canvasWidthFeet; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * pixelsPerFoot, 0);
+        ctx.lineTo(x * pixelsPerFoot, canvas.height);
+        ctx.stroke();
+    }
+
+    // Draw horizontal lines
+    for (let y = 0; y <= canvasHeightFeet; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * pixelsPerFoot);
+        ctx.lineTo(canvas.width, y * pixelsPerFoot);
+        ctx.stroke();
+    }
+
+    // Optional: Draw labels for the grid
+    ctx.fillStyle = 'pink';
+    ctx.font = '10px Arial';
+    for (let i = 0; i <= canvasWidthFeet; i++) {
+        ctx.fillText(i.toFixed(0), i * pixelsPerFoot, canvas.height - 5);
+    }
+    for (let j = 1; j <= canvasHeightFeet; j++) {
+        ctx.fillText(j.toFixed(0), 5, canvas.height - j * pixelsPerFoot);
+    }
 }
 
 
@@ -19,21 +53,22 @@ function draw_particle(particle) {
 }
 
 function draw_angle(center, radius, angle)  //in degrees 
-    {
+{
     ctx.beginPath(); // Start a new path
+    radianAngle = angle * Math.PI / 180
 
     // Convert angle from degrees to radians
-    const startAngle = 0; // Start at the right (0 degrees)
-    const endAngle = angle * Math.PI / 180; // Convert angle to radians
+    const startAngle = 2 * Math.PI - radianAngle; // Start at the right (0 degrees)
+    const endAngle = 0; // Convert angle to radians
 
     // Draw the arc
     ctx.arc(center[0], center[1], radius, startAngle, endAngle, false); // Draw arc
-    ctx.strokeStyle = 'red'; // Set stroke color
+    ctx.strokeStyle = 'orange'; // Set stroke color
     ctx.lineWidth = 2; // Set line width
     ctx.stroke(); // Render the arc
 
     // Draw the angle text
-    ctx.fillStyle = 'black'; // Set text color
+    ctx.fillStyle = 'orange'; // Set text color
     ctx.font = '16px Arial'; // Set font size and family
 
     // Calculate text position
@@ -81,7 +116,7 @@ function draw_vector(start_point, end_point) {
 
     // Calculate the angle for the arrowhead
     const angle = Math.atan2(end_point[1] - start_point[1], end_point[0] - start_point[0]);
-    
+
     // Draw the arrowhead
     const arrow_length = 10; // Length of the arrowhead
     const arrow_angle = Math.PI / 6; // Angle of the arrowhead
@@ -93,37 +128,4 @@ function draw_vector(start_point, end_point) {
     ctx.strokeStyle = 'red'; // Set the stroke color for the vector
     ctx.lineWidth = 2; // Set the line width
     ctx.stroke(); // Render the vector
-}
-
-function draw_axes() {
-
-    // Set styles for the axes
-    heightCtx.strokeStyle = 'white'; // Color of the axes
-    heightCtx.lineWidth = 1;          // Width of the axes lines
-
-    // Draw the X axis (Time)
-    heightCtx.beginPath();
-    heightCtx.moveTo(0, h - 10); // Start point (0, height - 10)
-    heightCtx.lineTo(w, h - 10); // End point (width, height - 10)
-    heightCtx.stroke();
-
-    // Draw the Y axis (Height in Feet)
-    heightCtx.beginPath();
-    heightCtx.moveTo(30, 0); // Start point (30, 0)
-    heightCtx.lineTo(30, h); // End point (30, height)
-    heightCtx.stroke();
-
-    // Add labels for the axes
-    heightCtx.fillStyle = 'white'; // Color for the text
-    heightCtx.font = '14px Arial'; // Font style
-
-    // Label for the X axis (Time)
-    heightCtx.fillText('Time (s)', w / 2 - 25, h - 20);
-
-    // Label for the Y axis (Height)
-    heightCtx.save(); // Save current context
-    heightCtx.translate(10, h / 2); // Move to the position for Y label
-    heightCtx.rotate(-Math.PI / 2); // Rotate context to draw vertical text
-    heightCtx.fillText('Height (feet)', 0, 0); // Draw Y axis label
-    heightCtx.restore(); // Restore context to original state
 }

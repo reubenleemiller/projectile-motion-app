@@ -13,3 +13,6 @@ def serve_from_static(filename):
     response = make_response(send_from_directory("static", filename))
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     return response
+
+if __name__ == "__main__":
+    app.run(debug=True)
