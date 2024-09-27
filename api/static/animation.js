@@ -1,6 +1,6 @@
 
 let gravitation = G
-TIME_STEP = 0.0025
+TIME_STEP = 0.0025*2
 const ctx = canvas.getContext('2d');
 
 function pixels_to_feet(pixels) {
