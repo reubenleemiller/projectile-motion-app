@@ -11,34 +11,39 @@
     <h1>Projectile Motion!</h1>
     
     <div class="container">
-        <!-- Sliders in a dotted box -->
         <fieldset>
             <legend>Simulation Settings</legend>
-            <div class="slider-container">
-                <label for="massSlider">Mass of Particle</label>
-                <input type="range" id="massSlider" min="1" max="100" value="50">
-                
-                <label for="gravitySlider">Gravitational Acceleration</label>
-                <input type="range" id="gravitySlider" min="0" max="20" value="9.8">
 
-                <label for="dtSlider">time step</label>
-                <input type="range" id="dtSlider" min="0" max="48" value="46" step="0.1">
+            <div class="slider-container">
+                <!-- Gravitational Acceleration -->
+                <label for="gravitySlider">Gravitational Acceleration (feet/s^2)</label>
+                <input type="range" id="gravitySlider" min="0" max="100" value="32.2">
+                <input type="number" id="gravityInput" value="32.2">
+
+                <!-- Initial Speed -->
+                <label for="speedSlider">Initial Speed (feet/s)</label>
+                <input type="range" id="speedSlider" min="1" max="100" value="40">
+                <input type="number" id="speedInput" value="40">
+
+                <!-- Initial Angle -->
+                <label for="angleSlider">Initial Angle (degrees)</label>
+                <input type="range" id="angleSlider" min="1" max="100" value="60">
+                <input type="number" id="angleInput" value="60">
+
+                <!-- Initial Height -->
+                <label for="heightSlider">Initial Height (feet)</label>
+                <input type="range" id="heightSlider" min="1" max="100" value="5">
+                <input type="number" id="heightInput" value="5">
+
+                <!-- Time Display -->
+                <div id="timeLabel" style="font-size: 24px; font-weight: bold; color: #3498db; padding: 10px; border: 2px solid #2980b9; border-radius: 8px; background-color: #ecf0f1; width: 150px; text-align: center;">
+                    0.00s
+                </div>
             </div>
             <button id="resetButton">Reset</button>
+            <button id="playButton">Start</button>
         </fieldset>
-
-        <div class="input-box-container">
-            <label for="angleInput">Angle (degrees):</label>
-            <input type="number" id="angleInput" value="45"><!-- Default angle value -->
-
-            <label for="heightInput">Initial Height (feet):</label>
-            <input type="number" id="heightInput" value="10"><!-- Default height value -->
-
-            <label for="speedInput">Initial Speed (feet/sec):</label>
-            <input type="number" id="speedInput" value="50"><!-- Default speed value -->
-
-
-        </div>
+    
         
 
         <!-- Canvas for drawing -->
@@ -49,6 +54,7 @@
     </div>
 
     <!-- Link to the external JavaScript files -->
+    <script src="{{ url_for('static', filename='inputsync.js') }}"></script>
     <script src="{{ url_for('static', filename='drawing.js') }}"></script>
     <script src="{{ url_for('static', filename='particles.js') }}"></script>
     <script src="{{ url_for('static', filename='animation.js') }}"></script>

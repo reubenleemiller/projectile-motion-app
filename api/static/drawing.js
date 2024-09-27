@@ -1,4 +1,6 @@
 
+const PIXEL_PER_FOOT = 20
+
 function draw_point(pos) {
     ctx.beginPath();
     ctx.arc(pos[0], pos[1], 2, 0, Math.PI * 2);
@@ -9,7 +11,6 @@ function draw_point(pos) {
 
 
 function drawGridDynamic(canvasWidthFeet, canvasHeightFeet) {
-    const pixelsPerFoot = 40; // 40 pixels per foot
 
     ctx.strokeStyle = 'lightgray'; // Color of the grid lines
     ctx.lineWidth = 1; // Line width
@@ -17,16 +18,16 @@ function drawGridDynamic(canvasWidthFeet, canvasHeightFeet) {
     // Draw vertical lines
     for (let x = 0; x <= canvasWidthFeet; x++) {
         ctx.beginPath();
-        ctx.moveTo(x * pixelsPerFoot, 0);
-        ctx.lineTo(x * pixelsPerFoot, canvas.height);
+        ctx.moveTo(x * PIXEL_PER_FOOT, 0);
+        ctx.lineTo(x * PIXEL_PER_FOOT, canvas.height);
         ctx.stroke();
     }
 
     // Draw horizontal lines
     for (let y = 0; y <= canvasHeightFeet; y++) {
         ctx.beginPath();
-        ctx.moveTo(0, y * pixelsPerFoot);
-        ctx.lineTo(canvas.width, y * pixelsPerFoot);
+        ctx.moveTo(0, y * PIXEL_PER_FOOT);
+        ctx.lineTo(canvas.width, y * PIXEL_PER_FOOT);
         ctx.stroke();
     }
 
@@ -34,10 +35,10 @@ function drawGridDynamic(canvasWidthFeet, canvasHeightFeet) {
     ctx.fillStyle = 'pink';
     ctx.font = '10px Arial';
     for (let i = 0; i <= canvasWidthFeet; i++) {
-        ctx.fillText(i.toFixed(0), i * pixelsPerFoot, canvas.height - 5);
+        ctx.fillText(i.toFixed(0), i * PIXEL_PER_FOOT, canvas.height - 5);
     }
     for (let j = 1; j <= canvasHeightFeet; j++) {
-        ctx.fillText(j.toFixed(0), 5, canvas.height - j * pixelsPerFoot);
+        ctx.fillText(j.toFixed(0), 5, canvas.height - j * PIXEL_PER_FOOT);
     }
 }
 
@@ -75,7 +76,7 @@ function draw_angle(center, radius, angle)  //in degrees
     const textX = center[0] + (radius + 10) * Math.cos(endAngle); // Position text to the right of the arc
     const textY = center[1] + (radius + 10) * Math.sin(endAngle); // Position text vertically aligned with the arc
 
-    ctx.fillText(`${angle.toFixed(2)}°`, textX, textY); // Draw the angle text
+    ctx.fillText(`${angle}°`, textX, textY); // Draw the angle text
 }
 
 function draw_dotted_line(ctx, start_point, end_point, color, text) {

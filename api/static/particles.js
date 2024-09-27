@@ -5,7 +5,7 @@ const H = canvas.height;
 const ctx = canvas.getContext('2d');
 
 
-let gravitation = 32.2
+const G = 32.2
 const ORIGIN = math.matrix([0, 0])
 
 
@@ -46,20 +46,25 @@ function border_collisions(particle, cof) {
     const vel = particle.velocity.valueOf()
     if (pos[0] + particle.radius > W) {
         particle.position = math.matrix([W - particle.radius, pos[1]])
-        particle.apply_impulse(math.multiply(particle.mass, [-2*vel[0], 0]))
+        particle.apply_impulse(math.multiply(particle.mass, [-2 * vel[0], 0]))
+        return true
     }
     if (pos[0] - particle.radius < 0) {
         particle.position = math.matrix([particle.radius, pos[1]])
-        particle.apply_impulse(math.multiply(particle.mass, [-2*vel[0], 0]))
+        particle.apply_impulse(math.multiply(particle.mass, [-2 * vel[0], 0]))
+        return true
     }
     if (pos[1] + particle.radius > H) {
         particle.position = math.matrix([pos[0], H - particle.radius])
         particle.velocity = math.matrix([0, 0])
+        return true
     }
     if (pos[1] - particle.radius < 0) {
         particle.position = math.matrix([pos[0], particle.radius])
-        particle.apply_impulse(math.multiply(particle.mass, [0, -2*vel[1]]))
+        particle.apply_impulse(math.multiply(particle.mass, [0, -2 * vel[1]]))
+        return true
     }
 
+    return false
 }
 
