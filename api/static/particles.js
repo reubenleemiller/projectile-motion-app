@@ -1,8 +1,6 @@
 const canvas = document.getElementById('myCanvas');
-const W = canvas.width;
-const H = canvas.height;
-
-const ctx = canvas.getContext('2d');
+let W = canvas.width;
+let H = canvas.height;
 
 
 const G = 32.2

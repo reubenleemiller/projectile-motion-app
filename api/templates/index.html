@@ -17,22 +17,22 @@
             <div class="slider-container">
                 <!-- Gravitational Acceleration -->
                 <label for="gravitySlider">Gravitational Acceleration (feet/s^2)</label>
-                <input type="range" id="gravitySlider" min="0" max="100" value="32.2">
+                <input type="range" id="gravitySlider" min="1" max="100" value="32.2", step="0.1">
                 <input type="number" id="gravityInput" value="32.2">
 
                 <!-- Initial Speed -->
                 <label for="speedSlider">Initial Speed (feet/s)</label>
-                <input type="range" id="speedSlider" min="1" max="100" value="40">
+                <input type="range" id="speedSlider" min="1" max="30" value="15", step="0.5">
                 <input type="number" id="speedInput" value="40">
 
                 <!-- Initial Angle -->
                 <label for="angleSlider">Initial Angle (degrees)</label>
-                <input type="range" id="angleSlider" min="1" max="100" value="60">
+                <input type="range" id="angleSlider" min="1" max="90" value="60", step="0.5">
                 <input type="number" id="angleInput" value="60">
 
                 <!-- Initial Height -->
                 <label for="heightSlider">Initial Height (feet)</label>
-                <input type="range" id="heightSlider" min="1" max="100" value="5">
+                <input type="range" id="heightSlider" min="1" max="80" value="5", step="0.2">
                 <input type="number" id="heightInput" value="5">
 
                 <!-- Time Display -->
@@ -50,7 +50,7 @@
         <div class="canvas-container">
             <canvas id="myCanvas" width="1200" height="600"></canvas>
         </div>
-
+        
     </div>
 
     <!-- Link to the external JavaScript files -->

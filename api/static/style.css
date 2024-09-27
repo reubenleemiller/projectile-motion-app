@@ -47,10 +47,12 @@ fieldset {
 }
 
 .canvas-container {
+    overflow: auto; 
+    width: 1200px; 
+    height: 600px; 
     display: flex;            /* Use Flexbox for alignment */
     flex-direction: column;   /* Arrange items in a column */
     align-items: center;      /* Center align items horizontally */
-    margin: 20px;            /* Add some margin if needed */
 }
 
 #myCanvas {
@@ -62,9 +64,6 @@ fieldset {
     border-radius: 10px; /* Rounded corners */
 }
 
-#heightCanvas {
-    border: 1px solid #ccc;  /* Optional: Add a border for visibility */
-}
 
 
 legend {
@@ -83,13 +82,6 @@ label {
 
 input[type="range"] {
     width: 200px;
-}
-
-#heightCanvas {
-    border: 1px solid black;
-    margin: 20px auto;
-    display: block;
-    background-color: rgba(0, 0, 0, 0.1); /* Light background for visibility */
 }
 
 .input-box-container {

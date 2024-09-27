@@ -1,6 +1,7 @@
 
 let gravitation = G
 TIME_STEP = 0.0025
+const ctx = canvas.getContext('2d');
 
 function pixels_to_feet(pixels) {
     return pixels / PIXEL_PER_FOOT
@@ -10,7 +11,9 @@ function feet_to_pixels(feet) {
     return feet * PIXEL_PER_FOOT
 }
 
-const REST_POSITION = math.matrix([feet_to_pixels(1), H-feet_to_pixels(1)])
+function rest_position() {
+    return math.matrix([feet_to_pixels(1), H - feet_to_pixels(1)])
+}
 
 function max_by_key(arr, key) {
     return arr.reduce((maxElement, currentElement) => {
@@ -28,8 +31,8 @@ function getSliderValues() {
     return {
         sgravity: parseFloat(gravity),
         sispeed: feet_to_pixels(parseFloat(ispeed)),
-        sangle: parseFloat(angle),              
-        siheight: feet_to_pixels(parseFloat(iheight)),                    
+        sangle: parseFloat(angle),
+        siheight: feet_to_pixels(parseFloat(iheight)),
     };
 }
 
@@ -42,10 +45,10 @@ function getInputValues() {
 
     // Return an object with the values
     return {
-        tgravity: gravity,
+        tgravity: feet_to_pixels(gravity),
         tispeed: feet_to_pixels(ispeed),
-        tangle: angle,              
-        tiheight: feet_to_pixels(iheight),       
+        tangle: angle,
+        tiheight: feet_to_pixels(iheight),
     };
 }
 
@@ -55,27 +58,7 @@ function reset(particle, event) {
     dt = 0
     time = 0
     positions = []
-    document.getElementById('gravitySlider').value = G
-}
-
-function adjust() {
-    const {tgravity, tispeed, tangle, tiheight } = getInputValues();
-    console.log(tangle)
-    const {sgravity, sispeed, sangle, sheight } = getSliderValues();
-    if (time == 0) {
-        const angleInRadians = math.unit(tangle, 'deg').toNumber('rad');
-
-        // Set initial velocity using speed and angle
-        const vx = tispeed * Math.cos(angleInRadians);  // Horizontal velocity
-        const vy = -tispeed * Math.sin(angleInRadians); // Vertical velocity (negative because canvas Y increases downward)
-
-        myparticle.velocity = math.matrix([vx, vy]);
-
-        myparticle.position = REST_POSITION;
-        myparticle.position = math.add(myparticle.position, [0, -tiheight])
-    }
-    gravitation = feet_to_pixels(tgravity)
-    return tangle
+    document.getElementById('gravityInput').value = G
 }
 
 function init_loop_vars() {
@@ -99,11 +82,56 @@ function draw_sequence(ppos, angle) {
     if (time == 0) {
         draw_angle([ppos[0], ppos[1]], myparticle.radius * 0.6, angle)
     }
-    draw_vector(ppos, math.add(myparticle.position, math.divide(myparticle.velocity, PIXEL_PER_FOOT/3)).valueOf())
+    draw_vector(ppos, math.add(myparticle.position, math.divide(myparticle.velocity, PIXEL_PER_FOOT / 3)).valueOf())
     for (let index = 0; index < positions.length; index++) {
         const p = positions[index];
         draw_point(p)
     }
+}
+
+function calculate_flight_properties(vx, vy, iheight, gravity) {
+
+    // Maximum height (in feet)
+    const h_max = iheight + (vy * vy) / (2 * gravity);
+
+    // Total time of flight (solving quadratic equation for when the projectile reaches y = 0)
+    const discriminant = vy * vy + 2 * gravity * iheight;
+    const t_total = (-vy + Math.sqrt(discriminant)) / gravity;
+
+    // Horizontal distance (in feet)
+    const horizontal_distance = vx * t_total;
+
+    // Return an object containing the properties
+    return {
+        t_flight: t_total.toFixed(2),   // Time in seconds
+        h_max: h_max.toFixed(2),         // Maximum height in feet
+        x_distance: horizontal_distance.toFixed(2)+1  // Distance in feet
+    };
+}
+
+
+function adjust() {
+    const { tgravity, tispeed, tangle, tiheight } = getInputValues();
+    if (time == 0) {
+        const angleInRadians = math.unit(tangle, 'deg').toNumber('rad');
+
+        // Set initial velocity using speed and angle
+        const vx = tispeed * Math.cos(angleInRadians);  // Horizontal velocity
+        const vy = -tispeed * Math.sin(angleInRadians); // Vertical velocity (negative because canvas Y increases downward)
+
+        myparticle.velocity = math.matrix([vx, vy]);
+
+        myparticle.position = math.add(rest_position(), [0, -tiheight]);
+        const { t_flight, x_distance, h_max } = calculate_flight_properties(pixels_to_feet(vx), pixels_to_feet(vy), pixels_to_feet(tiheight), pixels_to_feet(tgravity));
+        console.log(feet_to_pixels(x_distance + myparticle.radius), x_distance)
+        canvas.width = ((feet_to_pixels(x_distance) + myparticle.radius) % 1600) + 600
+        canvas.height = ((feet_to_pixels(h_max) + myparticle.radius) % 2000) + 600
+        W = canvas.width
+        H = canvas.height
+        myparticle.position = math.add(rest_position(), [0, -tiheight]);
+    }
+    gravitation = tgravity
+    return tangle
 }
 
 
@@ -122,7 +150,7 @@ function animate() {
     height = pixels_to_feet(H - pos[1])
     if (time != 0) {
         positions.push(pos)
-        maxh = max_by_key(positions, t => H-t[1])
+        maxh = max_by_key(positions, t => H - t[1])
     }
 
     draw_sequence(pos, angle)
