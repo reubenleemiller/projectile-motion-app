@@ -2,6 +2,7 @@
 let gravitation = G
 TIME_STEP = 0.0025*2
 const ctx = canvas.getContext('2d');
+const scrollable = document.getElementById('scrollable');
 
 function pixels_to_feet(pixels) {
     return pixels / PIXEL_PER_FOOT
@@ -77,8 +78,8 @@ function play() {
 function draw_sequence(ppos, angle) {
     drawGridDynamic(W / PIXEL_PER_FOOT, H / PIXEL_PER_FOOT)
     draw_particle(myparticle);
-    draw_dotted_line(ctx, [ppos[0], H], [ppos[0], ppos[1]], 'blue', `${(height).toFixed(2)} feet`, 0)
-    draw_dotted_line(ctx, [maxh[0], maxh[1]], [maxh[0], H], 'red', "max", 40)
+    draw_dotted_line(ctx, [ppos[0], H], [ppos[0], ppos[1]], 'blue', `${(height).toFixed(2)} feet`, 40)
+    draw_dotted_line(ctx, [maxh[0], H], [maxh[0], maxh[1]], 'red', "max", 80)
     if (time == 0) {
         draw_angle([ppos[0], ppos[1]], myparticle.radius * 0.6, angle)
     }
@@ -146,6 +147,8 @@ function animate() {
     // Update the particle's position and velocity
     myparticle.integrate(dt); // Assuming a 60 FPS frame time of ~16ms
     const pos = myparticle.position.valueOf()
+    const vel = myparticle.velocity.valueOf()
+
 
     height = pixels_to_feet(H - pos[1])
     if (time != 0) {
@@ -157,6 +160,8 @@ function animate() {
 
     if (!collided) {
         time += dt
+        scrollable.scrollLeft = pos[0]-scrollable.clientWidth/2
+        scrollable.scrollTop = pos[1]-scrollable.clientHeight/2
     }
     document.getElementById("timeLabel").innerHTML = `${time.toFixed(2)}s`
     frames += 1

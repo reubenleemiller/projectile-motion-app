@@ -101,11 +101,11 @@ function draw_dotted_line(ctx, start_point, end_point, color, text, paddingy) {
     ctx.stroke(); // Render the line
 
     const text_x = start_point[0] + 10; // Offset the text to the right of the line
-    const text_y = (start_point[1] + end_point[1]) / 2; // Center the text vertically
+    const text_y = end_point[1] + 40; // Center the text vertically
 
     ctx.fillStyle = 'white'; // Set text color
     ctx.font = '16px Arial'; // Set text font
-    ctx.fillText(text, text_x, text_y+paddingy); // Draw the text
+    ctx.fillText(text, text_x, text_y + paddingy); // Draw the text
 }
 
 function draw_vector(start_point, end_point) {
