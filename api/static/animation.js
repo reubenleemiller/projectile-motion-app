@@ -79,7 +79,7 @@ function adjust() {
 }
 
 function init_loop_vars() {
-    dt = TIME_STEP
+    dt = 0
     time = 0
     height = pixels_to_feet(H - myparticle.position.valueOf()[1])
     positions = []
