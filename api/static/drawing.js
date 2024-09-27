@@ -79,7 +79,7 @@ function draw_angle(center, radius, angle)  //in degrees
     ctx.fillText(`${angle}°`, textX, textY); // Draw the angle text
 }
 
-function draw_dotted_line(ctx, start_point, end_point, color, text) {
+function draw_dotted_line(ctx, start_point, end_point, color, text, paddingy) {
     const dx = end_point[0] - start_point[0];
     const dy = end_point[1] - start_point[1];
     const length = Math.sqrt(dx * dx + dy * dy); // Length of the line
@@ -105,7 +105,7 @@ function draw_dotted_line(ctx, start_point, end_point, color, text) {
 
     ctx.fillStyle = 'white'; // Set text color
     ctx.font = '16px Arial'; // Set text font
-    ctx.fillText(text, text_x, text_y); // Draw the text
+    ctx.fillText(text, text_x, text_y+paddingy); // Draw the text
 }
 
 function draw_vector(start_point, end_point) {

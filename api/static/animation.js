@@ -94,8 +94,8 @@ function play() {
 function draw_sequence(ppos, angle) {
     drawGridDynamic(W / PIXEL_PER_FOOT, H / PIXEL_PER_FOOT)
     draw_particle(myparticle);
-    draw_dotted_line(ctx, [ppos[0], H], [ppos[0], ppos[1]], 'blue', `${(height).toFixed(2)} feet`)
-    draw_dotted_line(ctx, [maxh[0], maxh[1]], [maxh[0], H], 'red', "max")
+    draw_dotted_line(ctx, [ppos[0], H], [ppos[0], ppos[1]], 'blue', `${(height).toFixed(2)} feet`, 0)
+    draw_dotted_line(ctx, [maxh[0], maxh[1]], [maxh[0], H], 'red', "max", 40)
     if (time == 0) {
         draw_angle([ppos[0], ppos[1]], myparticle.radius * 0.6, angle)
     }
@@ -135,6 +135,10 @@ function animate() {
     requestAnimationFrame(animate); // Recursively call animate to create animation
 }
 
-document.getElementById("resetButton").addEventListener("click", (event) => { reset(myparticle, event) });
-document.getElementById("playButton").addEventListener("click", play);
+function bind_events() {
+    document.getElementById("resetButton").addEventListener("click", (event) => { reset(myparticle, event) });
+    document.getElementById("playButton").addEventListener("click", play);
+}
+
+bind_events();
 animate(); // Start the animation loop
