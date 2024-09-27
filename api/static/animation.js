@@ -124,8 +124,8 @@ function adjust() {
         myparticle.position = math.add(rest_position(), [0, -tiheight]);
         const { t_flight, x_distance, h_max } = calculate_flight_properties(pixels_to_feet(vx), pixels_to_feet(vy), pixels_to_feet(tiheight), pixels_to_feet(tgravity));
         console.log(feet_to_pixels(x_distance + myparticle.radius), x_distance)
-        canvas.width = ((feet_to_pixels(x_distance) + myparticle.radius) % 20000) + 600
-        canvas.height = ((feet_to_pixels(h_max) + myparticle.radius) % 20000) + 600
+        canvas.width = ((feet_to_pixels(x_distance) + myparticle.radius) % 10000) + 600
+        canvas.height = ((feet_to_pixels(h_max) + myparticle.radius) % 10000) + 600
         W = canvas.width
         H = canvas.height
         myparticle.position = math.add(rest_position(), [0, -tiheight]);
