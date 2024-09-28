@@ -1,6 +1,19 @@
 
 const PIXEL_PER_FOOT = 20
 
+
+function draw_lines(points) {
+    ctx.strokeStyle = 'orange';
+    for (let index = 0; index < points.length-1; index++) {
+        const cp = points[index];
+        const np = points[index+1]
+        ctx.beginPath();
+        ctx.moveTo(cp[0], cp[1]);
+        ctx.lineTo(np[0], np[1]);
+        ctx.stroke();
+    }
+}
+
 function draw_point(pos) {
     ctx.beginPath();
     ctx.arc(pos[0], pos[1], 2, 0, Math.PI * 2);
@@ -79,7 +92,7 @@ function draw_angle(center, radius, angle)  //in degrees
     ctx.fillText(`${angle}°`, textX, textY); // Draw the angle text
 }
 
-function draw_dotted_line(ctx, start_point, end_point, color, text, paddingy) {
+function draw_dotted_line(ctx, start_point, end_point, color, text, paddingx, paddingy) {
     const dx = end_point[0] - start_point[0];
     const dy = end_point[1] - start_point[1];
     const length = Math.sqrt(dx * dx + dy * dy); // Length of the line
@@ -105,7 +118,7 @@ function draw_dotted_line(ctx, start_point, end_point, color, text, paddingy) {
 
     ctx.fillStyle = 'white'; // Set text color
     ctx.font = '16px Arial'; // Set text font
-    ctx.fillText(text, text_x, text_y + paddingy); // Draw the text
+    ctx.fillText(text, text_x + paddingx, text_y + paddingy); // Draw the text
 }
 
 function draw_vector(start_point, end_point) {

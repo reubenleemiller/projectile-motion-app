@@ -13,7 +13,7 @@ function feet_to_pixels(feet) {
 }
 
 function rest_position() {
-    return math.matrix([feet_to_pixels(1), H - feet_to_pixels(1)])
+    return math.matrix([feet_to_pixels(1), canvas.height - feet_to_pixels(1)])
 }
 
 function max_by_key(arr, key) {
@@ -78,16 +78,14 @@ function play() {
 function draw_sequence(ppos, angle) {
     drawGridDynamic(W / PIXEL_PER_FOOT, H / PIXEL_PER_FOOT)
     draw_particle(myparticle);
-    draw_dotted_line(ctx, [ppos[0], H], [ppos[0], ppos[1]], 'blue', `${(height).toFixed(2)} feet`, 40)
-    draw_dotted_line(ctx, [maxh[0], H], [maxh[0], maxh[1]], 'red', "max", 80)
+    draw_dotted_line(ctx, [ppos[0], H], [ppos[0], ppos[1]], 'blue', `${(height).toFixed(2)} feet`, 0, 60)
+    draw_dotted_line(ctx, [ppos[0], ppos[1]], [0, ppos[1]], 'red', `${(pixels_to_feet(ppos[0])).toFixed(2)} feet`, -200, -60)
+    draw_dotted_line(ctx, [maxh[0], H], [maxh[0], maxh[1]], 'red', "max", 0, 80)
     if (time == 0) {
         draw_angle([ppos[0], ppos[1]], myparticle.radius * 0.6, angle)
     }
     draw_vector(ppos, math.add(myparticle.position, math.divide(myparticle.velocity, PIXEL_PER_FOOT / 3)).valueOf())
-    for (let index = 0; index < positions.length; index++) {
-        const p = positions[index];
-        draw_point(p)
-    }
+    draw_lines(positions)
 }
 
 function calculate_flight_properties(vx, vy, iheight, gravity) {
@@ -124,7 +122,6 @@ function adjust() {
 
         myparticle.position = math.add(rest_position(), [0, -tiheight]);
         const { t_flight, x_distance, h_max } = calculate_flight_properties(pixels_to_feet(vx), pixels_to_feet(vy), pixels_to_feet(tiheight), pixels_to_feet(tgravity));
-        console.log(feet_to_pixels(x_distance + myparticle.radius), x_distance)
         canvas.width = ((feet_to_pixels(x_distance) + myparticle.radius) % 10000) + 600
         canvas.height = ((feet_to_pixels(h_max) + myparticle.radius) % 10000) + 600
         W = canvas.width
@@ -155,6 +152,7 @@ function animate() {
         positions.push(pos)
         maxh = max_by_key(positions, t => H - t[1])
     }
+    //console.log(pos)
 
     draw_sequence(pos, angle)
 
